@@ -1,14 +1,16 @@
 PDNS_SERVER_PATTERN %{GREEDYDATA:pdns_message}
 
-POWERADMIN_SUCCESSFUL_LOGIN %{WORD:pdns_content} %{WORD:pdns_action} attempt from \[%{IP:pdns_client_ip}\] for user '%{GREEDYDATA:pdns_user}'
-POWERADMIN_FAILED_LOGIN %{WORD:pdns_content} %{WORD:pdns_action} attempt from \[%{IP:pdns_client_ip}\] with user '%{GREEDYDATA:pdns_user}'
+POWERADMIN_SUCCESSFUL_LOGIN %{WORD:pdns_content} %{WORD:pdns_action} attempt from \[%{IP:pdns_client_ip}\] for user '%{WORD:pdns_user}'
+POWERADMIN_FAILED_LOGIN %{WORD:pdns_content} %{WORD:pdns_action} attempt from \[%{IP:pdns_client_ip}\] with user '%{WORD:pdns_user}'
 POWERADMIN_LOGIN %{POWERADMIN_SUCCESSFUL_LOGIN}|%{POWERADMIN_FAILED_LOGIN}
+
+PDNS_RECORD (?:%{IPORHOST}|[.]%{IPORHOST})
 
 POWERADMIN_ADD_ZONE client_ip:%{IP:pdns_client_ip} user:%{WORD:pdns_user} operation:%{WORD:pdns_action} zone:%{IPORHOST:pdns_zone} zone_type:%{WORD:pdns_zone_type} zone_template:%{WORD:pdns_zone_template}
 POWERADMIN_DELETE_ZONE client_ip:%{IP:pdns_client_ip} user:%{WORD:pdns_user} operation:%{WORD:pdns_action} zone:%{IPORHOST:pdns_zone} zone_type:%{WORD:pdns_zone_type}
-POWERADMIN_ADD_RECORD client_ip:%{IP:pdns_client_ip} user:%{WORD:pdns_user} operation:%{WORD:pdns_action} record_type:%{WORD:pdns_record_type} record:%{IPORHOST:pdns_record} content:%{GREEDYDATA:pdns_content} ttl:%{INT:pdns_ttl} priority:%{INT:pdns_priority}
-POWERADMIN_EDIT_RECORD client_ip:%{IP:pdns_client_ip} user:%{WORD:pdns_user} operation:%{WORD:pdns_action} old_record_type:%{WORD:pdns_old_record_type} old_record:%{IPORHOST:pdns_old_record} old_content:%{GREEDYDATA:pdns_old_content} old_ttl:%{INT:pdns_old_ttl} old_priority:%{INT:pdns_old_priority} record_type:%{WORD:pdns_record_type} record:%{IPORHOST:pdns_record} content:%{GREEDYDATA:pdns_content} ttl:%{INT:pdns_ttl} priority:%{INT:pdns_priority}
-POWERADMIN_DELETE_RECORD client_ip:%{IP:pdns_client_ip} user:%{WORD:pdns_user} operation:%{WORD:pdns_action} record_type:%{WORD:pdns_record_type} record:%{IPORHOST:pdns_record} content:%{GREEDYDATA:pdns_content} ttl:%{INT:pdns_ttl} priority:%{INT:pdns_priority}
+POWERADMIN_ADD_RECORD client_ip:%{IP:pdns_client_ip} user:%{WORD:pdns_user} operation:%{WORD:pdns_action} record_type:%{WORD:pdns_record_type} record:%{PDNS_RECORD:pdns_record} content:%{GREEDYDATA:pdns_content} ttl:%{INT:pdns_ttl} priority:%{INT:pdns_priority}
+POWERADMIN_EDIT_RECORD client_ip:%{IP:pdns_client_ip} user:%{WORD:pdns_user} operation:%{WORD:pdns_action} old_record_type:%{WORD:pdns_old_record_type} old_record:%{PDNS_RECORD:pdns_old_record} old_content:%{GREEDYDATA:pdns_old_content} old_ttl:%{INT:pdns_old_ttl} old_priority:%{INT:pdns_old_priority} record_type:%{WORD:pdns_record_type} record:%{PDNS_RECORD:pdns_record} content:%{GREEDYDATA:pdns_content} ttl:%{INT:pdns_ttl} priority:%{INT:pdns_priority}
+POWERADMIN_DELETE_RECORD client_ip:%{IP:pdns_client_ip} user:%{WORD:pdns_user} operation:%{WORD:pdns_action} record_type:%{WORD:pdns_record_type} record:%{PDNS_RECORD:pdns_record} content:%{GREEDYDATA:pdns_content} ttl:%{INT:pdns_ttl} priority:%{INT:pdns_priority}
 
 POWERADMIN_ACTION %{POWERADMIN_ADD_ZONE}|%{POWERADMIN_DELETE_ZONE}|%{POWERADMIN_ADD_RECORD}|%{POWERADMIN_DELETE_RECORD}|%{POWERADMIN_EDIT_RECORD}
 
